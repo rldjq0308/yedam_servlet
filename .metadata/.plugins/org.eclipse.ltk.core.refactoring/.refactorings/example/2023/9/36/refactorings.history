@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;T20230905/src/main/resources&apos;&#x0D;&#x0A;- Original project: &apos;example&apos;&#x0D;&#x0A;- Destination element: &apos;T20230905/src/main/resources&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     database.properties&#x0D;&#x0A;     mybatis-config.xml" description="Copy files" destination="=T20230905/src\/main\/resources=/maven.pomderived=/true=/=/optional=/true=/" element1="src/main/resources/database.properties" element2="src/main/resources/mybatis-config.xml" files="2" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1693892746905" units="0" version="1.0"/>
+</session>

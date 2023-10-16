@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.T20230905.book.mapper.BookMapper">
+
+<select id="list" resultType="co.yedam.T20230905.book.service.BookVO">
+	SELECT * FROM BOOK
+</select>
+
+<insert id="insert" parameterType="co.yedam.T20230905.book.service.BookVO">
+  	INSERT INTO BOOK 
+  	VALUES(#{bkCode},#{bkTitle},#{bkAuthor},#{bkPress},#{bkPrice})
+</insert>
+
+<delete id="delete" parameterType="String">
+ 	DELETE BOOK WHERE BK_CODE = #{bkCode}
+</delete>
+
+</mapper>

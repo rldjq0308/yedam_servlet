@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>bookInfo</title>
+	<style>
+		#container {
+			width: 800px;
+			margin: auto;
+		}
+
+		.list {
+			border-collapse: collapse;
+			border-spacing: 0;
+			text-align: center;
+		}
+
+		th {
+			width: 100px;
+		}
+
+		td {
+			width: 100px;
+		}
+	</style>
+	<script src="../js/jquery.min.js"></script>
+</head>
+
+<body>
+	<div align="center" id="container">
+		<div id="listAdd">
+			<table>
+				<tr>
+					<th style="background-color:lightgray; width: 150px; text-align: center;">도서코드</th>
+					<td><input type="text" id="addCode" style="width:600px; height:28px;"></td>
+				</tr>
+				<tr>
+					<th style="background-color:lightgray; width: 150px; text-align: center;">도서명</th>
+					<td><input type="text" id="addTitle" style="width:600px; height:28px;"></td>
+				</tr>
+				<tr>
+					<th style="background-color:lightgray; width: 150px; text-align: center;">저자</th>
+					<td><input type="text" id="addAuthor" style="width:600px; height:28px;"></td>
+				</tr>
+				<tr>
+					<th style="background-color:lightgray; width: 150px; text-align: center;">출판사</th>
+					<td><input type="text" id="addPress" style="width:600px; height:28px;"></td>
+				</tr>
+				<tr>
+					<th style="background-color:lightgray; width: 150px; text-align: center;">금액</th>
+					<td><input type="text" id="addPrice" style="width:600px; height:28px;"></td>
+				</tr>
+				<div>
+					<button class="addBtn">저장</button>
+					<button class="eachDel">선택삭제</button>
+				</div>
+			</table>
+		</div>
+		<hr>
+		<table border="1" class="list">
+			<thead style="background-color: darkgray;">
+				<tr height="40">
+					<th><input type="checkbox" id="selectAll"></th>
+					<th>도서코드</th>
+					<th>도서명</th>
+					<th>저자</th>
+					<th>출판사</th>
+					<th>가격</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody id="myBook">
+				<tr>
+					<td class="doDel"><input type="checkbox"></td>
+					<td class="code">P12301285</td>
+					<td class="name">이것이 자바다</td>
+					<td class="author">홍성문</td>
+					<td class="press">신흥출판사</td>
+					<td class="price">25,000원</td>
+					<td class="delBtn"><button>삭제</button></td>
+				</tr>
+				<tr>
+					<td class="doDel"><input type="checkbox"></td>
+					<td class="code">P12301285</td>
+					<td class="name">이것이 자바다</td>
+					<td class="author">홍성문</td>
+					<td class="press">신흥출판사</td>
+					<td class="price">25,000원</td>
+					<td class="delBtn"><button>삭제</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script src="../js/book.js"></script>
+	<script>
+		var book = new Book();
+
+		//도서리스트
+
+		book.bookList(function (data) {
+			for (let i = 0; i < data.length; i++) {
+				$('#myBook').append(
+					$("<tr></tr>").attr('bkCode', data[i].bkCode)
+						.append($("<td></td>").attr("class", "doDel").append($("<input></input>").attr("type", "checkbox")))
+						.append($("<td></td>").attr("class", "code").text(data[i].bkCode))
+						.append($("<td></td>").attr("class", "name").text(data[i].bkTitle))
+						.append($("<td></td>").attr("class", "author").text(data[i].bkAuthor))
+						.append($("<td></td>").attr("class", "press").text(data[i].bkPress))
+						.append($("<td></td>").attr("class", "price").text(data[i].bkPrice + "원"))
+						.append($("<td></td>").attr("class", "delBtn").append($("<button></button>").text("삭제")))
+				);
+			}
+		})
+
+		// 도서 추가				
+		$('#listAdd').on('click', '.addBtn', function () {
+			var bkCode = $('#addCode').val();
+			var bkTitle = $('#addTitle').val();
+			var bkAuthor = $('#addAuthor').val();
+			var bkPress = $('#addPress').val();
+			var bkPrice = $('#addPrice').val();
+
+			var param = {bkCode, bkTitle, bkAuthor, bkPress, bkPrice};
+
+			console.log(param);
+			book.bookAdd(param, function (data) {
+				$('#myBook').append(
+					$("<tr></tr>").attr('bkCode', data.data.bkCode)
+						.append($("<td></td>").attr("class", "doDel").append($("<input></input>").attr("type", "checkbox")))
+						.append($("<td></td>").attr("class", "code").text(data.data.bkCode))
+						.append($("<td></td>").attr("class", "name").text(data.data.bkTitle))
+						.append($("<td></td>").attr("class", "author").text(data.data.bkAuthor))
+						.append($("<td></td>").attr("class", "press").text(data.data.bkPress))
+						.append($("<td></td>").attr("class", "price").text(data.data.bkPrice + "원"))
+						.append($("<td></td>").attr("class", "delBtn").append($("<button></button>").text("삭제")))
+				);
+				$('#addCode').val('');
+				$('#addTitle').val('');
+				$('#addAuthor').val('');
+				$('#addPress').val('');
+				$('#addPrice').val('');
+			})
+		})
+
+		//도서 삭제
+
+		$('#myBook').on('click', '.delBtn', function () {
+			var bkCode = $(this).parent().attr('bkCode');
+			book.bookDelete(bkCode, function (data) {
+				let temp = $('[bkCode=' + bkCode + ']');
+				temp.css('display', 'none');
+			})
+		})
+
+		//선택 삭제
+		$('#listAdd').on('click', '.eachDel', function () {
+			const delList = document.querySelectorAll('#myBook input:checked');
+			delList.forEach(tr => {
+				var bkCode = $(delList).attr('bkCode');
+				console.log(bkCode + "입니다");
+			})
+		});
+
+		// selectAll
+
+		$("#selectAll").change(function () {
+			if ($("#selectAll").is(":checked")) {
+				$(".doDel > input").attr("checked", "true");
+			}
+			else if ($("#selectAll").not(":checked")) {
+				$(".doDel > input").removeAttr("checked");
+			}
+		});
+
+	</script>
+</body>
+
+</html>
